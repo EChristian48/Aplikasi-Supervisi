@@ -5,7 +5,8 @@
   "main": "src/scripts/index.tsx",
   "scripts": {
     "dev-build": "webpack --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "emulator": "firebase emulators:start --import=./firestore_data --export-on-exit"
   },
   "repository": {
     "type": "git",
@@ -35,6 +36,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "firebase": "^7.17.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0"
