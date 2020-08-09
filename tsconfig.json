@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "outDir": "./public",
+
+    "module": "CommonJS",
+
+    "jsx": "react",
+    "sourceMap": true,
+
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"]
+  },
+  "exclude": ["node_modules"]
+}
