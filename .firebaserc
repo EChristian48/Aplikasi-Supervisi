@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "supervisi-matrikulasi"
+  },
+  "targets": {
+    "supervisi-matrikulasi": {
+      "hosting": {
+        "supervisi-web": [
+          "supervisi-web"
+        ]
+      }
+    }
   }
 }
