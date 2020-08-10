@@ -1,9 +1,13 @@
-import * as functions from 'firebase-functions';
+import * as functions from 'firebase-functions'
+import * as admin from 'firebase-admin'
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+admin.initializeApp()
+
+const createUserDocument = functions.auth.user().onCreate(user => {
+  const userDocRef = admin.firestore().doc(`users/${user.uid}`)
+  const userData = { ...user }
+
+  return userDocRef.create(userData)
+})
+
+export { createUserDocument }
