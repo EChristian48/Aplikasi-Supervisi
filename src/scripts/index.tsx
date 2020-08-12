@@ -1,8 +1,13 @@
+import '../styles/style.css'
+
 import * as React from 'react'
 import { render } from 'react-dom'
 
 import * as firebase from 'firebase/app'
+import 'firebase/firestore'
+import 'firebase/functions'
 import { firebaseConfig } from './firebaseConfig'
+import { App } from './App'
 
 firebase.initializeApp(firebaseConfig)
 
@@ -16,4 +21,9 @@ if (location.hostname === '127.0.0.1' || location.hostname === 'localhost') {
   firebase.functions().useFunctionsEmulator('http://localhost:5001')
 }
 
-render(<React.StrictMode></React.StrictMode>, document.getElementById('root'))
+render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
+)
