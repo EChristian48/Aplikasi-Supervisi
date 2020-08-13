@@ -2,6 +2,12 @@
   height: 100vh;
 }
 
+.my-2,
 .mb-2 {
   margin-bottom: 2rem;
+}
+
+.my-2,
+.mt-2 {
+  margin-top: 2rem;
 }
