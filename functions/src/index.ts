@@ -13,6 +13,7 @@ const createUserDocument = functions.auth.user().onCreate(user => {
     email: user.email,
     name: user.displayName,
     photoUrl: user.photoURL,
+    role: 'kurikulum',
   }
 
   userDocRef.create(userData)
