@@ -6,10 +6,11 @@ import { useAuth } from './hooks/useAuth'
 import { LoginPage } from './pages/LoginPage'
 import { NeedAuth } from './components/NeedAuth'
 import { HomePage } from './pages/HomePage'
+import { useUserRole } from './hooks/useUserRole'
 
 const App: React.FC = () => {
   const user = useAuth()
-  console.log(user)
+  const userRole = useUserRole(user)
 
   return (
     <CssBaseline>
@@ -23,7 +24,7 @@ const App: React.FC = () => {
 
           <Route path='/'>
             <NeedAuth user={user}>
-              <HomePage />
+              <HomePage userRole={userRole} />
             </NeedAuth>
           </Route>
         </Switch>
