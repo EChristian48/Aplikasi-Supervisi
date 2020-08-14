@@ -16,7 +16,7 @@ const createUserDocument = functions.auth.user().onCreate(user => {
     role: 'kurikulum',
   }
 
-  userDocRef.create(userData)
+  return userDocRef.create(userData)
 })
 
 export { createUserDocument }
