@@ -1,5 +1,5 @@
 {
-  "name": "rechat",
+  "name": "supervisi",
   "version": "0.0.1",
   "description": "Simple chat appllication.",
   "main": "src/scripts/index.tsx",
