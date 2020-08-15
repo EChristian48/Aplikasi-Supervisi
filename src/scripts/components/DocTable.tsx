@@ -8,14 +8,19 @@ import {
   TableCell,
 } from '@material-ui/core'
 
-const DocTable: React.FC = props => {
+type DocTableProps = {
+  headers: string[]
+}
+
+const DocTable: React.FC<DocTableProps> = props => {
   return (
     <TableContainer>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Nama File</TableCell>
-            <TableCell>Aksi</TableCell>
+            {props.headers.map(header => (
+              <TableCell key={header}>{header}</TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>{props.children}</TableBody>
