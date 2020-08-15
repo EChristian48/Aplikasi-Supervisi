@@ -9,9 +9,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  List,
-  ListItem,
-  ListItemText,
   TableRow,
   TableCell,
 } from '@material-ui/core'
@@ -42,7 +39,7 @@ const akun = [
   {
     role: 'Kurikulum',
     username: 'kurikulum@kurikulum.com',
-    password: 'kurikulum',
+    password: 'kurikulumkurikulum',
   },
   {
     role: 'Kepsek',

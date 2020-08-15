@@ -4,11 +4,6 @@ import {
   Container,
   Grid,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
   TableRow,
   TableCell,
   Typography,
@@ -16,7 +11,6 @@ import {
 } from '@material-ui/core'
 
 import * as firebase from 'firebase/app'
-import 'firebase/storage'
 
 import { DocTable } from '../../components/DocTable'
 import { useRouteMatch } from 'react-router-dom'

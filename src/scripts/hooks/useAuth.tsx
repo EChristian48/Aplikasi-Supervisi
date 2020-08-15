@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
 import * as firebase from 'firebase/app'
-import 'firebase/auth'
 
 type LoggedInStatus = firebase.User | null | 'loading'
 

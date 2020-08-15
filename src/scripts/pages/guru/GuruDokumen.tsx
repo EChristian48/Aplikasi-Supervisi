@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 
 import * as firebase from 'firebase/app'
-import 'firebase/storage'
+
 import { FileEntry } from '../../components/FileEntry'
 import { DocTable } from '../../components/DocTable'
 

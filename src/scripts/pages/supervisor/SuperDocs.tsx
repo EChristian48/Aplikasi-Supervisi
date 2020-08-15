@@ -1,17 +1,8 @@
 import * as React from 'react'
 
 import * as firebase from 'firebase/app'
-import 'firebase/firestore'
 
-import {
-  Container,
-  Grid,
-  List,
-  ListItemText,
-  ListItem,
-  TableCell,
-  TableRow,
-} from '@material-ui/core'
+import { Container, Grid, TableCell, TableRow } from '@material-ui/core'
 import { DocTable } from '../../components/DocTable'
 import { User } from '../../dataSchema'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'

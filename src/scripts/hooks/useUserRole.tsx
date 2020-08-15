@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { LoggedInStatus } from './useAuth'
 import { User, Role } from '../dataSchema'
 import * as firebase from 'firebase/app'
-import 'firebase/firestore'
 
 const useUserRole = (user: LoggedInStatus) => {
   const [userRole, setUserRole] = useState<Role>()
