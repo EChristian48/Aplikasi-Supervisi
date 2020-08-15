@@ -16,7 +16,6 @@ import {
 } from '@material-ui/core'
 import {
   Menu,
-  Publish,
   PowerSettingsNew,
   Description,
   AccountCircle,
@@ -32,6 +31,7 @@ import { GuruDokumen } from './guru/GuruDokumen'
 
 import DateFns from '@date-io/date-fns'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { SuperDocs } from './supervisor/SuperDocs'
 
 type Menu = {
   icon: JSX.Element
@@ -157,7 +157,9 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
                 <GuruDokumen />
               </Route>
 
-              <Route path='/supervisor/dokumen'>Daftar Dokumen</Route>
+              <Route path='/supervisor/dokumen'>
+                <SuperDocs />
+              </Route>
 
               <Route path='/kurikulum/supervisor'>Daftar Dokumen</Route>
               <Route path='/kurikulum/jadwal'>Daftar Dokumen</Route>
