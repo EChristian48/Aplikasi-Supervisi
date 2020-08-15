@@ -8,4 +8,12 @@ interface User {
 
 type Role = 'guru' | 'supervisor' | 'kurikulum' | 'kepsek' | undefined
 
-export { User, Role }
+type GuruFile = {
+  name: string
+  downloadUrl: string
+  fullPath: string
+  accepted: boolean
+  date: number
+}
+
+export { User, Role, GuruFile }
