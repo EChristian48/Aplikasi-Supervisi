@@ -32,6 +32,7 @@ import { GuruDokumen } from './guru/GuruDokumen'
 import DateFns from '@date-io/date-fns'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { SuperDocs } from './supervisor/SuperDocs'
+import { Jadwal } from './kurikulum/Jadwal'
 
 type Menu = {
   icon: JSX.Element
@@ -162,7 +163,9 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
               </Route>
 
               <Route path='/kurikulum/supervisor'>Daftar Dokumen</Route>
-              <Route path='/kurikulum/jadwal'>Daftar Dokumen</Route>
+              <Route path='/kurikulum/jadwal'>
+                <Jadwal />
+              </Route>
 
               <Route path='/kepsek/laporan'>Laporan Kepsek</Route>
             </Switch>
