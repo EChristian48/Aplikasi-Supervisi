@@ -2,6 +2,7 @@
 public
 firebaseConfig.*
 firestore_data
+*.cache
 
 # Logs
 logs
