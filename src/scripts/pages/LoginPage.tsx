@@ -9,11 +9,18 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
+  List,
+  ListItem,
+  ListItemText,
+  TableRow,
+  TableCell,
 } from '@material-ui/core'
 
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import { Alert } from '../components/Alert'
+import { DocTable } from '../components/DocTable'
+import { GuruDokumen } from './guru/GuruDokumen'
 
 type LoginPageState = {
   [x: string]: any
@@ -21,13 +28,35 @@ type LoginPageState = {
     failed: boolean
     message: string
   }
+  isDialogOpen: boolean
 }
+
+const akun = [
+  { role: 'Guru', username: 'guru@guru.com', password: 'guruguru' },
+  { role: 'Guru', username: 'guru2@guru.com', password: 'guruguru' },
+  {
+    role: 'Supervisor',
+    username: 'supervisor@supervisor.com',
+    password: 'supervisorsupervisor',
+  },
+  {
+    role: 'Kurikulum',
+    username: 'kurikulum@kurikulum.com',
+    password: 'kurikulum',
+  },
+  {
+    role: 'Kepsek',
+    username: 'kepsek@kepsek.com',
+    password: 'kepsekkepsek',
+  },
+]
 
 class LoginPage extends React.Component<{}, LoginPageState> {
   state: LoginPageState = {
     email: '',
     password: '',
     loginInfo: { failed: false, message: '' },
+    isDialogOpen: false,
   }
   login = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -98,9 +127,38 @@ class LoginPage extends React.Component<{}, LoginPageState> {
               <Button variant='contained' color='primary' type='submit'>
                 Login
               </Button>
+
+              <Button
+                variant='outlined'
+                color='primary'
+                onClick={() => this.setState({ isDialogOpen: true })}>
+                List Akun
+              </Button>
             </Grid>
           </form>
         </Grid>
+
+        <Dialog
+          open={this.state.isDialogOpen}
+          onClose={() => this.setState({ isDialogOpen: false })}>
+          <DialogTitle>List Akun</DialogTitle>
+          <DialogContent>
+            <DocTable headers={['Role', 'Username', 'Password']}>
+              {akun.map(akun => (
+                <TableRow>
+                  <TableCell>{akun.role}</TableCell>
+                  <TableCell>{akun.username}</TableCell>
+                  <TableCell>{akun.password}</TableCell>
+                </TableRow>
+              ))}
+            </DocTable>
+            <DialogContentText>
+              Note: Aplikasi ini belum dikasih database {'&'} storage rules,
+              jadi masih belum aman walau ada login, tapi fungsionalitas sudah
+              70%, kalau buat polishing masih belum
+            </DialogContentText>
+          </DialogContent>
+        </Dialog>
       </Container>
     )
   }
