@@ -60,23 +60,25 @@ const GuruDokumen: React.FC = () => {
     }
   }
 
-  const createDbRecord = (filePath: string) => {
-    return firebase
-      .firestore()
-      .collection('guru')
-      .doc(firebase.auth().currentUser?.uid)
-      .collection('files')
-      .add({
-        fullPath: filePath,
-        accepted: false,
-      })
+  const createDbRecord = (snapshot: firebase.storage.UploadTaskSnapshot) => {
+    return snapshot.ref.getDownloadURL().then(url => {
+      firebase
+        .firestore()
+        .collection('guru')
+        .doc(firebase.auth().currentUser?.uid)
+        .collection('files')
+        .doc(snapshot.ref.fullPath.split('/').join())
+        .set({
+          downloadUrl: url,
+          fullPath: snapshot.ref.fullPath,
+          accepted: false,
+          name: snapshot.ref.name,
+          date: selectedDate,
+        })
+    })
   }
 
   const fileInput = React.useRef<HTMLInputElement>(null)
-  let putMethod: (
-    data: Blob | Uint8Array | ArrayBuffer,
-    metadata?: firebase.storage.UploadMetadata | undefined
-  ) => firebase.storage.UploadTask
 
   React.useEffect(() => {
     updateFiles()
@@ -103,13 +105,22 @@ const GuruDokumen: React.FC = () => {
 
         <Grid item xs={12} md={6} container>
           <Grid item xs={12}>
-            <DocTable>
+            <DocTable headers={['File', 'Aksi']}>
               {files.map(file => (
                 <FileEntry
                   file={file}
-                  deleteCallback={() =>
-                    setFiles(files.filter(value => value !== file))
-                  }
+                  deleteCallback={() => {
+                    firebase
+                      .firestore()
+                      .collection('guru')
+                      .doc(firebase.auth().currentUser?.uid)
+                      .collection('files')
+                      .doc(file.fullPath.split('/').join())
+                      .delete()
+                      .then(() =>
+                        setFiles(files.filter(value => value !== file))
+                      )
+                  }}
                   key={file.fullPath}
                 />
               ))}
@@ -142,7 +153,7 @@ const GuruDokumen: React.FC = () => {
                   .child(`${fileInput.current?.files[0].name}`)
                   .put(fileInput.current?.files[0])
                   .then(snapshot => {
-                    createDbRecord(snapshot.ref.fullPath)
+                    createDbRecord(snapshot)
                     closeDialog()
                     updateFiles()
                   })
