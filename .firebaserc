@@ -5,8 +5,8 @@
   "targets": {
     "supervisi-matrikulasi": {
       "hosting": {
-        "supervisi-web": [
-          "supervisi-web"
+        "supervisi": [
+          "supervisi-erick"
         ]
       }
     }
