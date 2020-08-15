@@ -14,7 +14,12 @@ type FileEntryProps = {
 
 const FileEntry: React.FC<FileEntryProps> = props => {
   const [urlString, setUrlString] = React.useState<string>()
-  props.file.getDownloadURL().then(result => setUrlString(result))
+
+  React.useEffect(() => {
+    props.file.getDownloadURL().then(result => {
+      setUrlString(result)
+    })
+  }, [])
 
   return (
     <TableRow>
