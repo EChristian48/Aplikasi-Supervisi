@@ -77,19 +77,21 @@
 24. Setelah selesai, kembali lagi ke direktori utama dengan `cd ..`, lalu jalankan `npm run build`
     ![img](https://i.imgur.com/KYeimlo.png)
 
-25. Abis itu jalanin `firebase deploy`
+25. Jalanin `firebase init` dulu, nanti pilih aja yes yes, terus pilih fitur nya `functions`, `hosting`, `firestore`, `storage`. (Ga ada screenshot, kelupaan)
+
+26. Abis itu jalanin `firebase deploy`
     ![img](https://i.imgur.com/YmGMaFr.png)
 
-26. Balik lagi ke firebase console, buka bagian "Authentication", "Sign In Method", lalu klik "E-Mail/Password"
+27. Balik lagi ke firebase console, buka bagian "Authentication", "Sign In Method", lalu klik "E-Mail/Password"
     ![img](https://i.imgur.com/WhHBJIU.png)
 
-27. Klik "Enable" lalu "Save"
+28. Klik "Enable" lalu "Save"
     ![img](https://i.imgur.com/OBNlZzx.png)
 
-28. Tambahin user kamu di sini. Klik "Users", terus "Add Users" (ngerti lah dah capek ngetik gua)
+29. Tambahin user kamu di sini. Klik "Users", terus "Add Users" (ngerti lah dah capek ngetik gua)
     ![img](https://i.imgur.com/rPiaz2b.png)
 
-29. Buka Database lagi, terus masuk ke collection users. Di situ lu bisa lihat users yang tadi lu bikin. Role-nya bisa diganti jadi `guru` / `kurikulum` / `supervisor` / `kepsek`
+30. Buka Database lagi, terus masuk ke collection users. Di situ lu bisa lihat users yang tadi lu bikin. Role-nya bisa diganti jadi `guru` / `kurikulum` / `supervisor` / `kepsek`
     ![img](https://i.imgur.com/8kH7eVJ.png)
 
-30. Beres
+31. Beres
