@@ -142,7 +142,7 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
           <Divider />
 
           <List>
-            <ListItem button>
+            <ListItem button onClick={() => firebase.auth().signOut()}>
               <ListItemIcon>
                 <PowerSettingsNew />
               </ListItemIcon>
