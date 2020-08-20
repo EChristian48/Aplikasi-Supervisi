@@ -55,12 +55,6 @@ const menus: Menu[] = [
     link: '#/supervisor/dokumen',
   },
   {
-    icon: <AccountCircle />,
-    name: 'Pilih Supervisor',
-    role: 'kurikulum',
-    link: '#/kurikulum/supervisor',
-  },
-  {
     icon: <Schedule />,
     name: 'Daftar Jadwal',
     role: 'kurikulum',
@@ -162,7 +156,6 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
                 <SuperDocs />
               </Route>
 
-              <Route path='/kurikulum/supervisor'>Daftar Dokumen</Route>
               <Route path='/kurikulum/jadwal'>
                 <Jadwal />
               </Route>
