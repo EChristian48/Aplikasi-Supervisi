@@ -142,7 +142,7 @@ class LoginPage extends React.Component<{}, LoginPageState> {
           <DialogContent>
             <DocTable headers={['Role', 'Username', 'Password']}>
               {akun.map(akun => (
-                <TableRow>
+                <TableRow key={akun.username}>
                   <TableCell>{akun.role}</TableCell>
                   <TableCell>{akun.username}</TableCell>
                   <TableCell>{akun.password}</TableCell>
