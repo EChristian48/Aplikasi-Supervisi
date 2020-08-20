@@ -1,4 +1,4 @@
-interface User {
+type User = {
   uid: string
   name: string | undefined | null
   email: string | undefined | null
@@ -16,4 +16,8 @@ type GuruFile = {
   date: number
 }
 
-export { User, Role, GuruFile }
+type Jadwal = {
+  html: string
+}
+
+export { User, Role, GuruFile, Jadwal }
