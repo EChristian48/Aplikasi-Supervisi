@@ -92,7 +92,7 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
     this.setState({ isDrawerOpen: true })
   }
 
-  setAppbarVisibility = (visibility: boolean) => {
+  hideAppbar = (visibility: boolean) => {
     this.setState({ isHidden: visibility })
   }
 
@@ -103,7 +103,9 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
           <CircularProgress />
         </Backdrop>
 
-        <AppBar position='static' hidden={this.state.isHidden}>
+        <AppBar
+          position='static'
+          style={{ display: this.state.isHidden ? 'none' : 'block' }}>
           <Toolbar>
             <IconButton edge='start' onClick={this.openDrawer}>
               <Menu />
@@ -164,7 +166,7 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
               </Route>
 
               <Route path='/kepsek/laporan'>
-                <KepsekLapor />
+                <KepsekLapor hideAppBar={this.hideAppbar} />
               </Route>
             </Switch>
           </MuiPickersUtilsProvider>
