@@ -1,20 +1,12 @@
 import * as React from 'react'
 import { DatePicker } from '@material-ui/pickers'
-import {
-  Container,
-  Grid,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-} from '@material-ui/core'
+import { Container, Grid, Button } from '@material-ui/core'
 
 import * as firebase from 'firebase/app'
 
 import { FileEntry } from '../../components/FileEntry'
 import { BasicTable } from '../../components/BasicTable'
+import { UploadDialog } from '../../components/UploadDialog'
 
 const GuruDokumen: React.FC = () => {
   const [selectedDate, setDate] = React.useState(
@@ -23,13 +15,8 @@ const GuruDokumen: React.FC = () => {
   const [files, setFiles] = React.useState<firebase.storage.Reference[]>([])
   const [isDialogOpen, setDialogOpen] = React.useState(false)
 
-  const closeDialog = () => {
-    setDialogOpen(false)
-  }
-
-  const openDialog = () => {
-    setDialogOpen(true)
-  }
+  const closeDialog = () => setDialogOpen(false)
+  const openDialog = () => setDialogOpen(true)
 
   const getFiles = () => {
     return firebase
@@ -45,40 +32,6 @@ const GuruDokumen: React.FC = () => {
       setFiles(listResult.items)
     })
   }
-
-  const uploadFile = () => {
-    if (fileInput.current?.files) {
-      return firebase
-        .storage()
-        .ref()
-        .child(firebase.auth().currentUser?.uid as string)
-        .child(`${selectedDate}`)
-        .child(`${fileInput.current?.files[0].name}`)
-        .put(fileInput.current?.files[0])
-    } else {
-      console.log('mana wei')
-    }
-  }
-
-  const createDbRecord = (snapshot: firebase.storage.UploadTaskSnapshot) => {
-    return snapshot.ref.getDownloadURL().then(url => {
-      firebase
-        .firestore()
-        .collection('guru')
-        .doc(firebase.auth().currentUser?.uid)
-        .collection('files')
-        .doc(snapshot.ref.fullPath.split('/').join())
-        .set({
-          downloadUrl: url,
-          fullPath: snapshot.ref.fullPath,
-          accepted: false,
-          name: snapshot.ref.name,
-          date: selectedDate,
-        })
-    })
-  }
-
-  const fileInput = React.useRef<HTMLInputElement>(null)
 
   React.useEffect(() => {
     updateFiles()
@@ -109,18 +62,9 @@ const GuruDokumen: React.FC = () => {
               {files.map(file => (
                 <FileEntry
                   file={file}
-                  deleteCallback={() => {
-                    firebase
-                      .firestore()
-                      .collection('guru')
-                      .doc(firebase.auth().currentUser?.uid)
-                      .collection('files')
-                      .doc(file.fullPath.split('/').join())
-                      .delete()
-                      .then(() =>
-                        setFiles(files.filter(value => value !== file))
-                      )
-                  }}
+                  deleteCallback={() =>
+                    setFiles(files.filter(value => value !== file))
+                  }
                   key={file.fullPath}
                 />
               ))}
@@ -135,34 +79,12 @@ const GuruDokumen: React.FC = () => {
         </Grid>
       </Grid>
 
-      <Dialog open={isDialogOpen} onClose={closeDialog}>
-        <DialogTitle>Upload File</DialogTitle>
-        <DialogContent>
-          <DialogContentText>Plis lah jangan hina design-nya</DialogContentText>
-          <input type='file' name='upload' id='upload' ref={fileInput} />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => {
-              if (fileInput.current?.files) {
-                firebase
-                  .storage()
-                  .ref()
-                  .child(firebase.auth().currentUser?.uid as string)
-                  .child(`${selectedDate}`)
-                  .child(`${fileInput.current?.files[0].name}`)
-                  .put(fileInput.current?.files[0])
-                  .then(snapshot => {
-                    createDbRecord(snapshot)
-                    closeDialog()
-                    updateFiles()
-                  })
-              }
-            }}>
-            Upload
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <UploadDialog
+        onClose={closeDialog}
+        open={isDialogOpen}
+        selectedDate={selectedDate}
+        uploadCallback={updateFiles}
+      />
     </Container>
   )
 }
