@@ -13,22 +13,11 @@ import {
   TableCell,
 } from '@material-ui/core'
 
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
+import { auth } from 'firebase/app'
 import { Alert } from '../components/Alert'
 import { BasicTable } from '../components/BasicTable'
-import { GuruDokumen } from './guru/GuruDokumen'
 
-type LoginPageState = {
-  [x: string]: any
-  loginInfo: {
-    failed: boolean
-    message: string
-  }
-  isDialogOpen: boolean
-}
-
-const akun = [
+const accountList = [
   { role: 'Guru', username: 'guru@guru.com', password: 'guruguru' },
   { role: 'Guru', username: 'guru2@guru.com', password: 'guruguru' },
   {
@@ -48,117 +37,116 @@ const akun = [
   },
 ]
 
-class LoginPage extends React.Component<{}, LoginPageState> {
-  state: LoginPageState = {
-    email: '',
-    password: '',
-    loginInfo: { failed: false, message: '' },
-    isDialogOpen: false,
-  }
-  login = (e: React.FormEvent<HTMLFormElement>) => {
+type LoginState = 'failed' | 'loading'
+type LoginResult = {
+  state: LoginState
+  message: string
+}
+
+const LoginPage: React.FC = () => {
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
+  const [LoginStatus, setLoginStatus] = React.useState<LoginResult>()
+  const [isAccListOpen, setAccListOpen] = React.useState(false)
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state['email'], this.state['password'])
-      .catch(e =>
-        this.setState({
-          loginInfo: {
-            failed: true,
-            message: e.message,
-          },
-        })
-      )
-  }
-
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    })
-  }
-
-  closeDialog = () => {
-    this.setState({
-      loginInfo: { failed: false, message: '' },
-    })
-  }
-
-  render() {
-    return (
-      <Container>
-        <Alert
-          onClose={this.closeDialog}
-          open={this.state.loginInfo.failed}
-          title='Gagal Login'>
-          {this.state.loginInfo.message}
-        </Alert>
-
-        <Grid
-          container
-          alignItems='center'
-          justify='center'
-          className='full-height'>
-          <form onSubmit={this.login}>
-            <Grid container direction='column'>
-              <TextField
-                type='email'
-                variant='outlined'
-                label='E-Mail'
-                size='small'
-                style={{ marginBottom: '10px' }}
-                name='email'
-                onChange={this.handleChange}
-                value={this.state['email']}
-              />
-              <TextField
-                type='password'
-                variant='outlined'
-                label='Password'
-                size='small'
-                name='password'
-                style={{ marginBottom: '10px' }}
-                onChange={this.handleChange}
-                value={this.state['password']}
-              />
-
-              <Button variant='contained' color='primary' type='submit'>
-                Login
-              </Button>
-
-              <Button
-                variant='outlined'
-                color='primary'
-                onClick={() => this.setState({ isDialogOpen: true })}>
-                List Akun
-              </Button>
-            </Grid>
-          </form>
-        </Grid>
-
-        <Dialog
-          open={this.state.isDialogOpen}
-          onClose={() => this.setState({ isDialogOpen: false })}>
-          <DialogTitle>List Akun</DialogTitle>
-          <DialogContent>
-            <BasicTable headers={['Role', 'Username', 'Password']}>
-              {akun.map(akun => (
-                <TableRow key={akun.username}>
-                  <TableCell>{akun.role}</TableCell>
-                  <TableCell>{akun.username}</TableCell>
-                  <TableCell>{akun.password}</TableCell>
-                </TableRow>
-              ))}
-            </BasicTable>
-            <DialogContentText>
-              Note: Aplikasi ini belum dikasih database {'&'} storage rules,
-              jadi masih belum aman walau ada login, tapi fungsionalitas sudah
-              70%, kalau buat polishing masih belum
-            </DialogContentText>
-          </DialogContent>
-        </Dialog>
-      </Container>
+    login().catch(error =>
+      setLoginStatus({
+        state: 'failed',
+        message: error.message,
+      })
     )
   }
+
+  const login = () => {
+    setLoginStatus({
+      state: 'loading',
+      message: '',
+    })
+    return auth().signInWithEmailAndPassword(email, password)
+  }
+
+  const clearLoginStatus = () => setLoginStatus(undefined)
+
+  const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setEmail(e.target.value)
+  const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setPassword(e.target.value)
+
+  const openAccList = () => setAccListOpen(true)
+  const closeAccList = () => setAccListOpen(false)
+
+  return (
+    <Container>
+      <Alert
+        onClose={clearLoginStatus}
+        open={LoginStatus?.state === 'failed'}
+        title='Gagal Login'>
+        {LoginStatus?.message}
+      </Alert>
+
+      <Grid
+        container
+        alignItems='center'
+        justify='center'
+        className='full-height'>
+        <form onSubmit={handleSubmit}>
+          <Grid container direction='column'>
+            <TextField
+              type='email'
+              variant='outlined'
+              label='E-Mail'
+              size='small'
+              style={{ marginBottom: '10px' }}
+              name='email'
+              onChange={handleEmail}
+              value={email}
+            />
+            <TextField
+              type='password'
+              variant='outlined'
+              label='Password'
+              size='small'
+              name='password'
+              style={{ marginBottom: '10px' }}
+              onChange={handlePassword}
+              value={password}
+            />
+
+            <Button variant='contained' color='primary' type='submit'>
+              Login
+            </Button>
+
+            <Button variant='outlined' color='primary' onClick={openAccList}>
+              List Akun
+            </Button>
+          </Grid>
+        </form>
+      </Grid>
+
+      <Dialog open={isAccListOpen} onClose={closeAccList}>
+        <DialogTitle>List Akun</DialogTitle>
+        <DialogContent>
+          <BasicTable headers={['Role', 'Username', 'Password']}>
+            {accountList.map(account => (
+              <TableRow key={account.username}>
+                <TableCell>{account.role}</TableCell>
+                <TableCell>{account.username}</TableCell>
+                <TableCell>{account.password}</TableCell>
+              </TableRow>
+            ))}
+          </BasicTable>
+          <DialogContentText>
+            Note: Aplikasi ini belum dikasih database {'&'} storage rules, jadi
+            masih belum aman walau ada login, tapi fungsionalitas sudah 70%,
+            kalau buat polishing masih belum
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
+    </Container>
+  )
 }
 
 export { LoginPage }
