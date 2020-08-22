@@ -6,7 +6,7 @@ import { Container, Grid, TableCell, TableRow } from '@material-ui/core'
 import { BasicTable } from '../../components/BasicTable'
 import { User } from '../../dataSchema'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
-import { SpecGuruDocs } from './SpecGuruDocs'
+import { ListDokumen } from './ListDokumen'
 
 const ListGuru: React.FC = () => {
   const [gurus, setGurus] = React.useState<User[]>([])
@@ -30,7 +30,7 @@ const ListGuru: React.FC = () => {
       <Grid container>
         <Switch>
           <Route path={`${match.path}/:id`}>
-            <SpecGuruDocs />
+            <ListDokumen />
           </Route>
 
           <Route path={`${match.path}`}>

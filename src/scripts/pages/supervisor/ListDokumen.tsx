@@ -10,37 +10,35 @@ import {
   Link,
 } from '@material-ui/core'
 
-import * as firebase from 'firebase/app'
+import { firestore } from 'firebase/app'
 
 import { BasicTable } from '../../components/BasicTable'
 import { useRouteMatch } from 'react-router-dom'
 import { GuruFile } from '../../dataSchema'
 
-const SpecGuruDocs: React.FC = () => {
+const ListDokumen: React.FC = () => {
   const [selectedDate, setDate] = React.useState(
     Date.parse(new Date().toDateString())
   )
   const match = useRouteMatch<{ id: string }>()
   const [files, setFiles] = React.useState<
-    firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>[]
+    firebase.firestore.QueryDocumentSnapshot<firestore.DocumentData>[]
   >([])
 
-  const getGuruFiles = (id: string) => {
-    return firebase
-      .firestore()
+  const guruFilesObserver = (
+    snapshot: firestore.QuerySnapshot<firestore.DocumentData>
+  ) => setFiles(snapshot.docs)
+
+  const listenGuruFiles = (id: string) => {
+    return firestore()
       .collection('guru')
       .doc(id)
       .collection('files')
       .where('date', '==', selectedDate)
-      .get()
-      .then(result => {
-        return result.docs
-      })
+      .onSnapshot(guruFilesObserver)
   }
 
-  React.useEffect(() => {
-    getGuruFiles(match.params.id).then(result => setFiles(result))
-  }, [selectedDate])
+  React.useEffect(() => listenGuruFiles(match.params.id), [selectedDate])
 
   return (
     <Container className='mt-2'>
@@ -85,8 +83,8 @@ const SpecGuruDocs: React.FC = () => {
                           file.ref
                             .update({ ...data, accepted: !data.accepted })
                             .then(() =>
-                              getGuruFiles(match.params.id).then(result =>
-                                setFiles(result)
+                              listenGuruFiles(match.params.id).then(result =>
+                                setFiles(result.docs)
                               )
                             )
                         }}>
@@ -104,4 +102,4 @@ const SpecGuruDocs: React.FC = () => {
   )
 }
 
-export { SpecGuruDocs }
+export { ListDokumen }
