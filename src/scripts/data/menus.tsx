@@ -20,7 +20,7 @@ const menus: Menu[] = [
     icon: <Description />,
     name: 'Daftar Dokumen',
     role: 'supervisor',
-    link: '#/supervisor/dokumen',
+    link: '#/supervisor/daftar',
   },
   {
     icon: <Schedule />,
