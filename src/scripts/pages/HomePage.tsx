@@ -1,18 +1,5 @@
 import * as React from 'react'
-import {
-  Button,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
-  SwipeableDrawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-} from '@material-ui/core'
-import { Menu, PowerSettingsNew } from '@material-ui/icons'
+import { List } from '@material-ui/core'
 
 import { auth } from 'firebase/app'
 
@@ -28,6 +15,8 @@ import { KepsekLapor } from './kepsek/KepsekLapor'
 import { menus } from '../data/menus'
 import { LoadingBanner } from '../components/LoadingBanner'
 import { CustomAppBar } from '../components/CustomAppBar'
+import { CustomDrawer } from '../components/CustomDrawer'
+import { DrawerItem } from '../components/MenuItem'
 type HomePageState = {
   isDrawerOpen: boolean
   isHidden: boolean
@@ -56,38 +45,24 @@ const HomePage: React.FC<HomePageProps> = ({ userRole }) => {
         visible={isAppBarShown}
       />
 
-      <SwipeableDrawer
-        open={isDrawerOpen}
+      <CustomDrawer
+        logout={logout}
         onClose={closeDrawer}
         onOpen={openDrawer}
-        anchor='left'>
+        open={isDrawerOpen}>
         <List style={{ width: 250 }}>
           {menus
             .filter(menu => menu.role === userRole)
             .map(menu => (
-              <ListItem
-                button
-                key={menu.name}
-                component='a'
-                href={menu.link}
-                onClick={closeDrawer}>
-                <ListItemIcon>{menu.icon}</ListItemIcon>
-                <ListItemText primary={menu.name} />
-              </ListItem>
+              <DrawerItem
+                icon={menu.icon}
+                onClick={closeDrawer}
+                href={menu.link}>
+                {menu.name}
+              </DrawerItem>
             ))}
         </List>
-
-        <Divider />
-
-        <List>
-          <ListItem button onClick={() => auth().signOut()}>
-            <ListItemIcon>
-              <PowerSettingsNew />
-            </ListItemIcon>
-            <ListItemText primary='Logout' />
-          </ListItem>
-        </List>
-      </SwipeableDrawer>
+      </CustomDrawer>
 
       {userRole && (
         <MuiPickersUtilsProvider utils={DateFns}>
