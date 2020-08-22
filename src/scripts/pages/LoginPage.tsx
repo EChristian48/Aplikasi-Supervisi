@@ -5,10 +5,6 @@ import {
   Grid,
   Container,
   TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
   TableRow,
   TableCell,
 } from '@material-ui/core'
@@ -91,7 +87,8 @@ const LoginPage: React.FC = () => {
         container
         alignItems='center'
         justify='center'
-        className='full-height'>
+        className='full-height'
+        direction='column'>
         <form onSubmit={handleSubmit}>
           <Grid container direction='column'>
             <TextField
@@ -100,7 +97,6 @@ const LoginPage: React.FC = () => {
               label='E-Mail'
               size='small'
               style={{ marginBottom: '10px' }}
-              name='email'
               onChange={handleEmail}
               value={email}
             />
@@ -109,7 +105,6 @@ const LoginPage: React.FC = () => {
               variant='outlined'
               label='Password'
               size='small'
-              name='password'
               style={{ marginBottom: '10px' }}
               onChange={handlePassword}
               value={password}
@@ -118,12 +113,12 @@ const LoginPage: React.FC = () => {
             <Button variant='contained' color='primary' type='submit'>
               Login
             </Button>
-
-            <Button variant='outlined' color='primary' onClick={openAccList}>
-              List Akun
-            </Button>
           </Grid>
         </form>
+
+        <Button variant='outlined' color='primary' onClick={openAccList}>
+          List Akun
+        </Button>
       </Grid>
 
       <BasicDialog
