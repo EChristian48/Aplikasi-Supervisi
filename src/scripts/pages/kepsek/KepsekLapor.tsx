@@ -16,10 +16,10 @@ import { GuruFile, Jadwal } from '../../dataSchema'
 import HtmlParser from 'react-html-parser'
 
 type KepsekLaporProps = {
-  hideAppBar: (state: boolean) => void
+  setAppBarShown: (state: boolean) => void
 }
 
-const KepsekLapor: React.FC<KepsekLaporProps> = props => {
+const KepsekLapor: React.FC<KepsekLaporProps> = ({ setAppBarShown }) => {
   const match = useRouteMatch()
   const [isLoading, setLoading] = React.useState(true)
   const [files, setFiles] = React.useState<GuruFile[]>([])
@@ -56,11 +56,11 @@ const KepsekLapor: React.FC<KepsekLaporProps> = props => {
               color='primary'
               fullWidth
               onClick={() => {
-                props.hideAppBar(true)
+                setAppBarShown(true)
                 hideButton(true)
                 setTimeout(window.print, 500)
                 setTimeout(() => {
-                  props.hideAppBar(false)
+                  setAppBarShown(false)
                   hideButton(false)
                 }, 2000)
               }}
