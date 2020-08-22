@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { SwipeableDrawer, Divider, List } from '@material-ui/core'
-import { DrawerItem } from './MenuItem'
+import { DrawerItem } from './DrawerItem'
 import { PowerSettingsNew } from '@material-ui/icons'
 
 type CustomDrawerProps = {

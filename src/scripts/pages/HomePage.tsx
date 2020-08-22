@@ -16,7 +16,7 @@ import { menus } from '../data/menus'
 import { LoadingBanner } from '../components/LoadingBanner'
 import { CustomAppBar } from '../components/CustomAppBar'
 import { CustomDrawer } from '../components/CustomDrawer'
-import { DrawerItem } from '../components/MenuItem'
+import { DrawerItem } from '../components/DrawerItem'
 type HomePageState = {
   isDrawerOpen: boolean
   isHidden: boolean
