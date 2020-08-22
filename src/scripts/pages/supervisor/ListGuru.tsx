@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import * as firebase from 'firebase/app'
+import { firestore } from 'firebase/app'
 
 import { Container, Grid, TableCell, TableRow } from '@material-ui/core'
 import { BasicTable } from '../../components/BasicTable'
@@ -8,13 +8,12 @@ import { User } from '../../dataSchema'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { SpecGuruDocs } from './SpecGuruDocs'
 
-const SuperDocs: React.FC = () => {
+const ListGuru: React.FC = () => {
   const [gurus, setGurus] = React.useState<User[]>()
   const match = useRouteMatch<{ id: string }>()
 
   React.useEffect(() => {
-    firebase
-      .firestore()
+    firestore()
       .collection('users')
       .where('role', '==', 'guru')
       .get()
@@ -46,7 +45,7 @@ const SuperDocs: React.FC = () => {
                       (location.href = `#${match.path}/${guru.uid}`)
                     }>
                     <TableCell>{guru.name}</TableCell>
-                    <TableCell>{guru.uid}</TableCell>
+                    <TableCell>{guru.mapel}</TableCell>
                     <TableCell>{guru.email}</TableCell>
                   </TableRow>
                 ))}
@@ -59,4 +58,4 @@ const SuperDocs: React.FC = () => {
   )
 }
 
-export { SuperDocs }
+export { ListGuru }

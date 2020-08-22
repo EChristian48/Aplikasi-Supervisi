@@ -9,7 +9,7 @@ import { GuruDokumen } from './guru/GuruDokumen'
 
 import DateFns from '@date-io/date-fns'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import { SuperDocs } from './supervisor/SuperDocs'
+import { ListGuru } from './supervisor/ListGuru'
 import { Jadwal } from './kurikulum/Jadwal'
 import { KepsekLapor } from './kepsek/KepsekLapor'
 import { menus } from '../data/menus'
@@ -76,8 +76,8 @@ const HomePage: React.FC<HomePageProps> = ({ userRole }) => {
               <GuruDokumen />
             </Route>
 
-            <Route path='/supervisor/dokumen'>
-              <SuperDocs />
+            <Route path='/supervisor/daftar'>
+              <ListGuru />
             </Route>
 
             <Route path='/kurikulum/jadwal'>
