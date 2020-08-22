@@ -1,12 +1,27 @@
 import * as React from 'react'
 import { DatePicker } from '@material-ui/pickers'
-import { Container, Grid, Button } from '@material-ui/core'
+import {
+  Container,
+  Grid,
+  Button,
+  CircularProgress,
+  makeStyles,
+  createStyles,
+} from '@material-ui/core'
 
-import * as firebase from 'firebase/app'
+import { storage, auth } from 'firebase/app'
 
 import { FileEntry } from '../../components/FileEntry'
 import { BasicTable } from '../../components/BasicTable'
 import { UploadDialog } from '../../components/UploadDialog'
+
+const useStyles = makeStyles(theme =>
+  createStyles({
+    loading: {
+      alignSelf: 'center',
+    },
+  })
+)
 
 const GuruDokumen: React.FC = () => {
   const [selectedDate, setDate] = React.useState(
@@ -14,21 +29,25 @@ const GuruDokumen: React.FC = () => {
   )
   const [files, setFiles] = React.useState<firebase.storage.Reference[]>([])
   const [isDialogOpen, setDialogOpen] = React.useState(false)
+  const [isLoading, setLoading] = React.useState(false)
+
+  const classes = useStyles()
 
   const closeDialog = () => setDialogOpen(false)
   const openDialog = () => setDialogOpen(true)
 
   const getFiles = () => {
-    return firebase
-      .storage()
+    return storage()
       .ref()
-      .child(firebase.auth().currentUser?.uid as string)
-      .child(`${selectedDate}`)
+      .child(auth().currentUser?.uid as string)
+      .child(selectedDate.toString())
       .listAll()
   }
 
   const updateFiles = () => {
+    setLoading(true)
     getFiles().then(listResult => {
+      setLoading(false)
       setFiles(listResult.items)
     })
   }
@@ -57,18 +76,25 @@ const GuruDokumen: React.FC = () => {
         </Grid>
 
         <Grid item xs={12} md={6} container>
-          <Grid item xs={12}>
-            <BasicTable headers={['File', 'Aksi']}>
-              {files.map(file => (
-                <FileEntry
-                  file={file}
-                  deleteCallback={() =>
-                    setFiles(files.filter(value => value !== file))
-                  }
-                  key={file.fullPath}
-                />
-              ))}
-            </BasicTable>
+          <Grid item xs={12} container justify='center'>
+            {isLoading ? (
+              <CircularProgress
+                variant='indeterminate'
+                className={classes.loading}
+              />
+            ) : (
+              <BasicTable headers={['File', 'Status', 'Aksi']}>
+                {files.map(file => (
+                  <FileEntry
+                    file={file}
+                    deleteCallback={() =>
+                      setFiles(files.filter(value => value !== file))
+                    }
+                    key={file.fullPath}
+                  />
+                ))}
+              </BasicTable>
+            )}
           </Grid>
 
           <Grid container item xs={12} justify='center' alignItems='center'>
