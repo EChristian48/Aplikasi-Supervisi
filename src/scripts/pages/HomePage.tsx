@@ -55,6 +55,7 @@ const HomePage: React.FC<HomePageProps> = ({ userRole }) => {
             .filter(menu => menu.role === userRole)
             .map(menu => (
               <DrawerItem
+                key={menu.link}
                 icon={menu.icon}
                 onClick={closeDrawer}
                 href={menu.link}>
