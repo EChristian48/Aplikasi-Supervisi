@@ -48,10 +48,6 @@ const KepsekLapor: React.FC<KepsekLaporProps> = props => {
 
   return (
     <>
-      <Backdrop open={isLoading}>
-        <CircularProgress />
-      </Backdrop>
-
       <Container style={{ marginTop: 20 }}>
         <Grid container>
           <Grid item xs={12}>
@@ -97,6 +93,10 @@ const KepsekLapor: React.FC<KepsekLaporProps> = props => {
           </Grid>
         </Grid>
       </Container>
+
+      <Backdrop open={isLoading}>
+        <CircularProgress />
+      </Backdrop>
     </>
   )
 }
