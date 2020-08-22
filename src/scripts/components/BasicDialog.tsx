@@ -7,7 +7,8 @@ import {
   DialogContentText,
 } from '@material-ui/core'
 
-type AlertProps = {
+type BasicDialogProps = {
+  text?: string
   title: string
   open: boolean
   onClose:
@@ -15,15 +16,16 @@ type AlertProps = {
     | undefined
 }
 
-const Alert: React.FC<AlertProps> = props => {
+const BasicDialog: React.FC<BasicDialogProps> = props => {
   return (
     <Dialog open={props.open} onClose={props.onClose}>
       <DialogTitle>Gagal Login</DialogTitle>
       <DialogContent>
-        <DialogContentText>{props.children}</DialogContentText>
+        <DialogContentText>{props.text}</DialogContentText>
+        {props.children}
       </DialogContent>
     </Dialog>
   )
 }
 
-export { Alert }
+export { BasicDialog }
