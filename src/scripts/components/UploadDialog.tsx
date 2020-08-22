@@ -61,8 +61,8 @@ const UploadDialog: React.FC<UploadDialogProps> = props => {
       downloadUrl: downloadUrl,
       fullPath: fileRef.fullPath,
       name: fileRef.name,
-      uploaderName: auth().currentUser?.displayName || 'No Name',
-      uploader: auth().currentUser?.uid || 'No ID',
+      uploaderName: auth().currentUser?.displayName,
+      uploader: auth().currentUser?.uid,
     }
 
     return firestoreRef.set(fileRecord)
