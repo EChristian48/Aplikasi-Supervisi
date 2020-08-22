@@ -9,6 +9,8 @@ type User = {
 type Role = 'guru' | 'supervisor' | 'kurikulum' | 'kepsek' | undefined
 
 type GuruFile = {
+  uploader: string
+  uploaderName: string
   name: string
   downloadUrl: string
   fullPath: string
