@@ -14,6 +14,7 @@ import {
 import { auth } from 'firebase/app'
 import { BasicDialog } from '../components/BasicDialog'
 import { BasicTable } from '../components/BasicTable'
+import { LoadingBanner } from '../components/LoadingBanner'
 
 const accountList = [
   { role: 'Guru', username: 'guru@guru.com', password: 'guruguru' },
@@ -90,72 +91,76 @@ const LoginPage: React.FC = () => {
   const closeAccList = () => setAccListOpen(false)
 
   return (
-    <Container>
-      <BasicDialog
-        onClose={clearLoginStatus}
-        open={LoginStatus?.state === 'failed'}
-        title='Gagal Login'
-        text={LoginStatus?.message}
-      />
+    <>
+      <LoadingBanner open={LoginStatus?.state === 'loading'} />
 
-      <Grid
-        container
-        alignItems='center'
-        justify='center'
-        className='full-height'
-        direction='column'>
-        <form onSubmit={handleSubmit}>
-          <Grid container direction='column'>
-            <TextField
-              type='email'
-              variant='outlined'
-              label='E-Mail'
-              size='small'
-              className={classes.marginBot2}
-              onChange={handleEmail}
-              value={email}
-            />
-            <TextField
-              type='password'
-              variant='outlined'
-              label='Password'
-              size='small'
-              className={classes.marginBot2}
-              onChange={handlePassword}
-              value={password}
-            />
+      <Container>
+        <BasicDialog
+          onClose={clearLoginStatus}
+          open={LoginStatus?.state === 'failed'}
+          title='Gagal Login'
+          text={LoginStatus?.message}
+        />
 
-            <Button variant='contained' color='primary' type='submit'>
-              Login
-            </Button>
-          </Grid>
-        </form>
+        <Grid
+          container
+          alignItems='center'
+          justify='center'
+          className='full-height'
+          direction='column'>
+          <form onSubmit={handleSubmit}>
+            <Grid container direction='column'>
+              <TextField
+                type='email'
+                variant='outlined'
+                label='E-Mail'
+                size='small'
+                className={classes.marginBot2}
+                onChange={handleEmail}
+                value={email}
+              />
+              <TextField
+                type='password'
+                variant='outlined'
+                label='Password'
+                size='small'
+                className={classes.marginBot2}
+                onChange={handlePassword}
+                value={password}
+              />
 
-        <Button
-          variant='outlined'
-          color='primary'
-          onClick={openAccList}
-          className={classes.marginTop2}>
-          List Akun
-        </Button>
-      </Grid>
+              <Button variant='contained' color='primary' type='submit'>
+                Login
+              </Button>
+            </Grid>
+          </form>
 
-      <BasicDialog
-        onClose={closeAccList}
-        open={isAccListOpen}
-        title='List Akun'
-        text='Note: Belum ada firestore/storage rules, Polishing on progress'>
-        <BasicTable headers={['Role', 'Username', 'Password']}>
-          {accountList.map(account => (
-            <TableRow key={account.username}>
-              <TableCell>{account.role}</TableCell>
-              <TableCell>{account.username}</TableCell>
-              <TableCell>{account.password}</TableCell>
-            </TableRow>
-          ))}
-        </BasicTable>
-      </BasicDialog>
-    </Container>
+          <Button
+            variant='outlined'
+            color='primary'
+            onClick={openAccList}
+            className={classes.marginTop2}>
+            List Akun
+          </Button>
+        </Grid>
+
+        <BasicDialog
+          onClose={closeAccList}
+          open={isAccListOpen}
+          title='List Akun'
+          text='Note: Belum ada firestore/storage rules, Polishing on progress'>
+          <BasicTable headers={['Role', 'Username', 'Password']}>
+            {accountList.map(account => (
+              <TableRow key={account.username}>
+                <TableCell>{account.role}</TableCell>
+                <TableCell>{account.username}</TableCell>
+                <TableCell>{account.password}</TableCell>
+              </TableRow>
+            ))}
+          </BasicTable>
+        </BasicDialog>
+      </Container>
+    </>
   )
 }
 
