@@ -15,26 +15,7 @@ import { auth } from 'firebase/app'
 import { BasicDialog } from '../components/BasicDialog'
 import { BasicTable } from '../components/BasicTable'
 import { LoadingBanner } from '../components/LoadingBanner'
-
-const accountList = [
-  { role: 'Guru', username: 'guru@guru.com', password: 'guruguru' },
-  { role: 'Guru', username: 'guru2@guru.com', password: 'guruguru' },
-  {
-    role: 'Supervisor',
-    username: 'supervisor@supervisor.com',
-    password: 'supervisorsupervisor',
-  },
-  {
-    role: 'Kurikulum',
-    username: 'kurikulum@kurikulum.com',
-    password: 'kurikulumkurikulum',
-  },
-  {
-    role: 'Kepsek',
-    username: 'kepsek@kepsek.com',
-    password: 'kepsekkepsek',
-  },
-]
+import { accountList } from '../data/accounts'
 
 const useStyles = makeStyles(theme =>
   createStyles({
