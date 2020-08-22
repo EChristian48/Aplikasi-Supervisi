@@ -1,11 +1,11 @@
-import * as firebase from 'firebase/app'
+import { initializeApp } from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/functions'
 import 'firebase/storage'
 import { firebaseConfig } from './firebaseConfig'
 
-firebase.initializeApp(firebaseConfig)
+initializeApp(firebaseConfig)
 
 import * as React from 'react'
 import { render } from 'react-dom'
