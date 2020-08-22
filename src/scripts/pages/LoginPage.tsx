@@ -16,7 +16,7 @@ import {
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import { Alert } from '../components/Alert'
-import { DocTable } from '../components/DocTable'
+import { BasicTable } from '../components/BasicTable'
 import { GuruDokumen } from './guru/GuruDokumen'
 
 type LoginPageState = {
@@ -140,7 +140,7 @@ class LoginPage extends React.Component<{}, LoginPageState> {
           onClose={() => this.setState({ isDialogOpen: false })}>
           <DialogTitle>List Akun</DialogTitle>
           <DialogContent>
-            <DocTable headers={['Role', 'Username', 'Password']}>
+            <BasicTable headers={['Role', 'Username', 'Password']}>
               {akun.map(akun => (
                 <TableRow key={akun.username}>
                   <TableCell>{akun.role}</TableCell>
@@ -148,7 +148,7 @@ class LoginPage extends React.Component<{}, LoginPageState> {
                   <TableCell>{akun.password}</TableCell>
                 </TableRow>
               ))}
-            </DocTable>
+            </BasicTable>
             <DialogContentText>
               Note: Aplikasi ini belum dikasih database {'&'} storage rules,
               jadi masih belum aman walau ada login, tapi fungsionalitas sudah

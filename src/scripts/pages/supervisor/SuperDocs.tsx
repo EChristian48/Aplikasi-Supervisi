@@ -3,7 +3,7 @@ import * as React from 'react'
 import * as firebase from 'firebase/app'
 
 import { Container, Grid, TableCell, TableRow } from '@material-ui/core'
-import { DocTable } from '../../components/DocTable'
+import { BasicTable } from '../../components/BasicTable'
 import { User } from '../../dataSchema'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { SpecGuruDocs } from './SpecGuruDocs'
@@ -37,7 +37,7 @@ const SuperDocs: React.FC = () => {
 
           <Route path={`${match.path}`}>
             <Grid item xs={12}>
-              <DocTable headers={['Nama Guru', 'Mata Pelajaran', 'E-Mail']}>
+              <BasicTable headers={['Nama Guru', 'Mata Pelajaran', 'E-Mail']}>
                 {gurus?.map(guru => (
                   <TableRow
                     key={guru.uid}
@@ -50,7 +50,7 @@ const SuperDocs: React.FC = () => {
                     <TableCell>{guru.email}</TableCell>
                   </TableRow>
                 ))}
-              </DocTable>
+              </BasicTable>
             </Grid>
           </Route>
         </Switch>

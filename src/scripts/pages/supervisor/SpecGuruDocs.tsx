@@ -12,7 +12,7 @@ import {
 
 import * as firebase from 'firebase/app'
 
-import { DocTable } from '../../components/DocTable'
+import { BasicTable } from '../../components/BasicTable'
 import { useRouteMatch } from 'react-router-dom'
 import { GuruFile } from '../../dataSchema'
 
@@ -63,7 +63,7 @@ const SpecGuruDocs: React.FC = () => {
 
         <Grid item xs={12} md={6} container>
           <Grid item xs={12}>
-            <DocTable headers={['File', 'Status', 'Aksi']}>
+            <BasicTable headers={['File', 'Status', 'Aksi']}>
               {files.map(file => {
                 const data = file.data() as GuruFile
 
@@ -96,7 +96,7 @@ const SpecGuruDocs: React.FC = () => {
                   </TableRow>
                 )
               })}
-            </DocTable>
+            </BasicTable>
           </Grid>
         </Grid>
       </Grid>

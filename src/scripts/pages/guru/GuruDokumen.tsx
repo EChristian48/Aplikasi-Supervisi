@@ -14,7 +14,7 @@ import {
 import * as firebase from 'firebase/app'
 
 import { FileEntry } from '../../components/FileEntry'
-import { DocTable } from '../../components/DocTable'
+import { BasicTable } from '../../components/BasicTable'
 
 const GuruDokumen: React.FC = () => {
   const [selectedDate, setDate] = React.useState(
@@ -105,7 +105,7 @@ const GuruDokumen: React.FC = () => {
 
         <Grid item xs={12} md={6} container>
           <Grid item xs={12}>
-            <DocTable headers={['File', 'Aksi']}>
+            <BasicTable headers={['File', 'Aksi']}>
               {files.map(file => (
                 <FileEntry
                   file={file}
@@ -124,7 +124,7 @@ const GuruDokumen: React.FC = () => {
                   key={file.fullPath}
                 />
               ))}
-            </DocTable>
+            </BasicTable>
           </Grid>
 
           <Grid container item xs={12} justify='center' alignItems='center'>
