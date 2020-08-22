@@ -9,15 +9,10 @@ import {
   makeStyles,
 } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
+import { useVisibilityClasses } from '../hooks/useVisibilityClasses'
 
 const useStyles = makeStyles(theme =>
   createStyles({
-    visible: {
-      visibility: 'visible',
-    },
-    hidden: {
-      visibility: 'hidden',
-    },
     marginRight2: {
       marginRight: theme.spacing(2),
     },
@@ -35,11 +30,14 @@ type CustomAppBarProps = {
 
 const CustomAppBar: React.FC<CustomAppBarProps> = props => {
   const classes = useStyles()
+  const visiblityClasses = useVisibilityClasses()
 
   return (
     <AppBar
       position='static'
-      className={props.visible ? classes.visible : classes.hidden}>
+      className={
+        props.visible ? visiblityClasses.visible : visiblityClasses.hidden
+      }>
       <Toolbar>
         <IconButton
           edge='start'
