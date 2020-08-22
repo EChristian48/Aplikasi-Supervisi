@@ -16,17 +16,7 @@ import { BasicDialog } from '../components/BasicDialog'
 import { BasicTable } from '../components/BasicTable'
 import { LoadingBanner } from '../components/LoadingBanner'
 import { accountList } from '../data/accounts'
-
-const useStyles = makeStyles(theme =>
-  createStyles({
-    marginBot2: {
-      marginBottom: theme.spacing(2),
-    },
-    marginTop2: {
-      marginTop: theme.spacing(2),
-    },
-  })
-)
+import { useSpacingClasses } from '../hooks/useSpacingClasses'
 
 type LoginState = 'failed' | 'loading'
 type LoginResult = {
@@ -40,7 +30,7 @@ const LoginPage: React.FC = () => {
   const [LoginStatus, setLoginStatus] = React.useState<LoginResult>()
   const [isAccListOpen, setAccListOpen] = React.useState(false)
 
-  const classes = useStyles()
+  const classes = useSpacingClasses()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

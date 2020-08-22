@@ -10,12 +10,10 @@ import {
 } from '@material-ui/core'
 import { Menu } from '@material-ui/icons'
 import { useVisibilityClasses } from '../hooks/useVisibilityClasses'
+import { useSpacingClasses } from '../hooks/useSpacingClasses'
 
 const useStyles = makeStyles(theme =>
   createStyles({
-    marginRight2: {
-      marginRight: theme.spacing(2),
-    },
     title: {
       flexGrow: 1,
     },
@@ -31,6 +29,7 @@ type CustomAppBarProps = {
 const CustomAppBar: React.FC<CustomAppBarProps> = props => {
   const classes = useStyles()
   const visiblityClasses = useVisibilityClasses()
+  const spacingClasses = useSpacingClasses()
 
   return (
     <AppBar
@@ -42,7 +41,7 @@ const CustomAppBar: React.FC<CustomAppBarProps> = props => {
         <IconButton
           edge='start'
           onClick={props.openDrawer}
-          className={classes.marginRight2}>
+          className={spacingClasses.marginRight2}>
           <Menu />
         </IconButton>
 
