@@ -7,6 +7,8 @@ import {
   TextField,
   TableRow,
   TableCell,
+  makeStyles,
+  createStyles,
 } from '@material-ui/core'
 
 import { auth } from 'firebase/app'
@@ -33,6 +35,17 @@ const accountList = [
   },
 ]
 
+const useStyles = makeStyles(theme =>
+  createStyles({
+    marginBot2: {
+      marginBottom: theme.spacing(2),
+    },
+    marginTop2: {
+      marginTop: theme.spacing(2),
+    },
+  })
+)
+
 type LoginState = 'failed' | 'loading'
 type LoginResult = {
   state: LoginState
@@ -44,6 +57,8 @@ const LoginPage: React.FC = () => {
   const [password, setPassword] = React.useState('')
   const [LoginStatus, setLoginStatus] = React.useState<LoginResult>()
   const [isAccListOpen, setAccListOpen] = React.useState(false)
+
+  const classes = useStyles()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -96,7 +111,7 @@ const LoginPage: React.FC = () => {
               variant='outlined'
               label='E-Mail'
               size='small'
-              style={{ marginBottom: '10px' }}
+              className={classes.marginBot2}
               onChange={handleEmail}
               value={email}
             />
@@ -105,7 +120,7 @@ const LoginPage: React.FC = () => {
               variant='outlined'
               label='Password'
               size='small'
-              style={{ marginBottom: '10px' }}
+              className={classes.marginBot2}
               onChange={handlePassword}
               value={password}
             />
@@ -116,7 +131,11 @@ const LoginPage: React.FC = () => {
           </Grid>
         </form>
 
-        <Button variant='outlined' color='primary' onClick={openAccList}>
+        <Button
+          variant='outlined'
+          color='primary'
+          onClick={openAccList}
+          className={classes.marginTop2}>
           List Akun
         </Button>
       </Grid>
