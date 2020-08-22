@@ -52,7 +52,11 @@ const HomePage: React.FC<HomePageProps> = ({ userRole }) => {
         open={isDrawerOpen}>
         <List style={{ width: 250 }}>
           {menus
-            .filter(menu => menu.role === userRole)
+            .filter(menu => {
+              // if (userRole === 'supervisor')
+              //   return menu.role === 'supervisor' || menu.role === 'guru'
+              return menu.role === userRole
+            })
             .map(menu => (
               <DrawerItem
                 key={menu.link}
