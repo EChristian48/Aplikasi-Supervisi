@@ -11,19 +11,10 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-  Backdrop,
-  CircularProgress,
 } from '@material-ui/core'
-import {
-  Menu,
-  PowerSettingsNew,
-  Description,
-  AccountCircle,
-  Schedule,
-} from '@material-ui/icons'
+import { Menu, PowerSettingsNew } from '@material-ui/icons'
 
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
+import { auth } from 'firebase/app'
 
 import { Role } from '../dataSchema'
 import { Switch, Route } from 'react-router-dom'
@@ -34,41 +25,9 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { SuperDocs } from './supervisor/SuperDocs'
 import { Jadwal } from './kurikulum/Jadwal'
 import { KepsekLapor } from './kepsek/KepsekLapor'
-
-type Menu = {
-  icon: JSX.Element
-  name: string
-  role: Role
-  link: string
-}
-
-const menus: Menu[] = [
-  {
-    icon: <Description />,
-    name: 'Dokumen Pembelajaran',
-    role: 'guru',
-    link: '#/guru/upload',
-  },
-  {
-    icon: <Description />,
-    name: 'Daftar Dokumen',
-    role: 'supervisor',
-    link: '#/supervisor/dokumen',
-  },
-  {
-    icon: <Schedule />,
-    name: 'Daftar Jadwal',
-    role: 'kurikulum',
-    link: '#/kurikulum/jadwal',
-  },
-  {
-    icon: <Description />,
-    name: 'Lihat Laporan',
-    role: 'kepsek',
-    link: '#/kepsek/laporan',
-  },
-]
-
+import { menus } from '../data/menus'
+import { LoadingBanner } from '../components/LoadingBanner'
+import { CustomAppBar } from '../components/CustomAppBar'
 type HomePageState = {
   isDrawerOpen: boolean
   isHidden: boolean
@@ -78,102 +37,81 @@ type HomePageProps = {
   userRole: Role
 }
 
-class HomePage extends React.Component<HomePageProps, HomePageState> {
-  state: HomePageState = {
-    isDrawerOpen: false,
-    isHidden: false,
-  }
+const HomePage: React.FC<HomePageProps> = ({ userRole }) => {
+  const [isDrawerOpen, setDrawerOpen] = React.useState(false)
+  const [isAppBarShown, setAppBarShown] = React.useState(true)
 
-  closeDrawer = () => {
-    this.setState({ isDrawerOpen: false })
-  }
+  const closeDrawer = () => setDrawerOpen(false)
+  const openDrawer = () => setDrawerOpen(true)
 
-  openDrawer = () => {
-    this.setState({ isDrawerOpen: true })
-  }
+  const logout = () => auth().signOut()
 
-  hideAppbar = (visibility: boolean) => {
-    this.setState({ isHidden: visibility })
-  }
+  return (
+    <>
+      <LoadingBanner open={!userRole} />
 
-  render() {
-    return (
-      <>
-        <Backdrop open={!this.props.userRole}>
-          <CircularProgress />
-        </Backdrop>
+      <CustomAppBar
+        logout={logout}
+        openDrawer={openDrawer}
+        visible={isAppBarShown}
+      />
 
-        <AppBar
-          position='static'
-          style={{ display: this.state.isHidden ? 'none' : 'block' }}>
-          <Toolbar>
-            <IconButton edge='start' onClick={this.openDrawer}>
-              <Menu />
-            </IconButton>
+      <SwipeableDrawer
+        open={isDrawerOpen}
+        onClose={closeDrawer}
+        onOpen={openDrawer}
+        anchor='left'>
+        <List style={{ width: 250 }}>
+          {menus
+            .filter(menu => menu.role === userRole)
+            .map(menu => (
+              <ListItem
+                button
+                key={menu.name}
+                component='a'
+                href={menu.link}
+                onClick={closeDrawer}>
+                <ListItemIcon>{menu.icon}</ListItemIcon>
+                <ListItemText primary={menu.name} />
+              </ListItem>
+            ))}
+        </List>
 
-            <Typography style={{ flexGrow: 1 }}>SuperDedeVisi</Typography>
+        <Divider />
 
-            <Button onClick={() => firebase.auth().signOut()}>Logout</Button>
-          </Toolbar>
-        </AppBar>
+        <List>
+          <ListItem button onClick={() => auth().signOut()}>
+            <ListItemIcon>
+              <PowerSettingsNew />
+            </ListItemIcon>
+            <ListItemText primary='Logout' />
+          </ListItem>
+        </List>
+      </SwipeableDrawer>
 
-        <SwipeableDrawer
-          open={this.state.isDrawerOpen}
-          onClose={this.closeDrawer}
-          onOpen={this.openDrawer}
-          anchor='left'>
-          <List style={{ width: 250 }}>
-            {menus
-              .filter(menu => menu.role === this.props.userRole)
-              .map(menu => (
-                <ListItem
-                  button
-                  key={menu.name}
-                  component='a'
-                  href={menu.link}
-                  onClick={this.closeDrawer}>
-                  <ListItemIcon>{menu.icon}</ListItemIcon>
-                  <ListItemText primary={menu.name} />
-                </ListItem>
-              ))}
-          </List>
+      {userRole && (
+        <MuiPickersUtilsProvider utils={DateFns}>
+          <Switch>
+            <Route path='/guru/upload'>
+              <GuruDokumen />
+            </Route>
 
-          <Divider />
+            <Route path='/supervisor/dokumen'>
+              <SuperDocs />
+            </Route>
 
-          <List>
-            <ListItem button onClick={() => firebase.auth().signOut()}>
-              <ListItemIcon>
-                <PowerSettingsNew />
-              </ListItemIcon>
-              <ListItemText primary='Logout' />
-            </ListItem>
-          </List>
-        </SwipeableDrawer>
+            <Route path='/kurikulum/jadwal'>
+              <Jadwal />
+            </Route>
 
-        {this.props.userRole && (
-          <MuiPickersUtilsProvider utils={DateFns}>
-            <Switch>
-              <Route path='/guru/upload'>
-                <GuruDokumen />
-              </Route>
-
-              <Route path='/supervisor/dokumen'>
-                <SuperDocs />
-              </Route>
-
-              <Route path='/kurikulum/jadwal'>
-                <Jadwal />
-              </Route>
-
-              <Route path='/kepsek/laporan'>
-                <KepsekLapor hideAppBar={this.hideAppbar} />
-              </Route>
-            </Switch>
-          </MuiPickersUtilsProvider>
-        )}
-      </>
-    )
-  }
+            <Route path='/kepsek/laporan'>
+              <KepsekLapor setAppBarShown={setAppBarShown} />
+            </Route>
+          </Switch>
+        </MuiPickersUtilsProvider>
+      )}
+    </>
+  )
 }
 
 export { HomePage }
