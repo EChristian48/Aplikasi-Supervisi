@@ -6,10 +6,11 @@ import {
   Typography,
   Link,
 } from '@material-ui/core'
+import { auth, storage, firestore } from 'firebase/app'
 
 type FileEntryProps = {
-  file: firebase.storage.Reference
-  deleteCallback: () => any
+  file: storage.Reference
+  deleteCallback?: (value: [any, void]) => any
 }
 
 const FileEntry: React.FC<FileEntryProps> = props => {
@@ -20,6 +21,18 @@ const FileEntry: React.FC<FileEntryProps> = props => {
       setUrlString(result)
     })
   }, [])
+
+  const deleteFile = () => {
+    return Promise.all([
+      props.file.delete(),
+      firestore()
+        .collection('guru')
+        .doc(auth().currentUser?.uid)
+        .collection('files')
+        .doc(props.file.fullPath.split('/').join())
+        .delete(),
+    ])
+  }
 
   return (
     <TableRow>
@@ -33,10 +46,7 @@ const FileEntry: React.FC<FileEntryProps> = props => {
         </Typography>
       </TableCell>
       <TableCell>
-        <Button
-          onClick={() => {
-            props.file.delete().then(props.deleteCallback)
-          }}>
+        <Button onClick={() => deleteFile().then(props.deleteCallback)}>
           Delete
         </Button>
       </TableCell>
