@@ -8,11 +8,11 @@ import {
   TableCell,
 } from '@material-ui/core'
 
-type DocTableProps = {
+type BasicTableProps = {
   headers: string[]
 }
 
-const DocTable: React.FC<DocTableProps> = props => {
+const BasicTable: React.FC<BasicTableProps> = props => {
   return (
     <TableContainer>
       <Table>
@@ -29,4 +29,4 @@ const DocTable: React.FC<DocTableProps> = props => {
   )
 }
 
-export { DocTable }
+export { BasicTable }
