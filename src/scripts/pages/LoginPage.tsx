@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core'
 
 import { auth } from 'firebase/app'
-import { Alert } from '../components/Alert'
+import { BasicDialog } from '../components/BasicDialog'
 import { BasicTable } from '../components/BasicTable'
 
 const accountList = [
@@ -80,12 +80,12 @@ const LoginPage: React.FC = () => {
 
   return (
     <Container>
-      <Alert
+      <BasicDialog
         onClose={clearLoginStatus}
         open={LoginStatus?.state === 'failed'}
-        title='Gagal Login'>
-        {LoginStatus?.message}
-      </Alert>
+        title='Gagal Login'
+        text={LoginStatus?.message}
+      />
 
       <Grid
         container
@@ -126,25 +126,21 @@ const LoginPage: React.FC = () => {
         </form>
       </Grid>
 
-      <Dialog open={isAccListOpen} onClose={closeAccList}>
-        <DialogTitle>List Akun</DialogTitle>
-        <DialogContent>
-          <BasicTable headers={['Role', 'Username', 'Password']}>
-            {accountList.map(account => (
-              <TableRow key={account.username}>
-                <TableCell>{account.role}</TableCell>
-                <TableCell>{account.username}</TableCell>
-                <TableCell>{account.password}</TableCell>
-              </TableRow>
-            ))}
-          </BasicTable>
-          <DialogContentText>
-            Note: Aplikasi ini belum dikasih database {'&'} storage rules, jadi
-            masih belum aman walau ada login, tapi fungsionalitas sudah 70%,
-            kalau buat polishing masih belum
-          </DialogContentText>
-        </DialogContent>
-      </Dialog>
+      <BasicDialog
+        onClose={closeAccList}
+        open={isAccListOpen}
+        title='List Akun'
+        text='Note: Belum ada firestore/storage rules, Polishing on progress'>
+        <BasicTable headers={['Role', 'Username', 'Password']}>
+          {accountList.map(account => (
+            <TableRow key={account.username}>
+              <TableCell>{account.role}</TableCell>
+              <TableCell>{account.username}</TableCell>
+              <TableCell>{account.password}</TableCell>
+            </TableRow>
+          ))}
+        </BasicTable>
+      </BasicDialog>
     </Container>
   )
 }
