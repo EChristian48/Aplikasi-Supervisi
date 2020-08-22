@@ -33,6 +33,7 @@ import DateFns from '@date-io/date-fns'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { SuperDocs } from './supervisor/SuperDocs'
 import { Jadwal } from './kurikulum/Jadwal'
+import { KepsekLapor } from './kepsek/KepsekLapor'
 
 type Menu = {
   icon: JSX.Element
@@ -70,6 +71,7 @@ const menus: Menu[] = [
 
 type HomePageState = {
   isDrawerOpen: boolean
+  isHidden: boolean
 }
 
 type HomePageProps = {
@@ -79,18 +81,19 @@ type HomePageProps = {
 class HomePage extends React.Component<HomePageProps, HomePageState> {
   state: HomePageState = {
     isDrawerOpen: false,
+    isHidden: false,
   }
 
   closeDrawer = () => {
-    this.setState({
-      isDrawerOpen: false,
-    })
+    this.setState({ isDrawerOpen: false })
   }
 
   openDrawer = () => {
-    this.setState({
-      isDrawerOpen: true,
-    })
+    this.setState({ isDrawerOpen: true })
+  }
+
+  setAppbarVisibility = (visibility: boolean) => {
+    this.setState({ isHidden: visibility })
   }
 
   render() {
@@ -100,7 +103,7 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
           <CircularProgress />
         </Backdrop>
 
-        <AppBar position='static'>
+        <AppBar position='static' hidden={this.state.isHidden}>
           <Toolbar>
             <IconButton edge='start' onClick={this.openDrawer}>
               <Menu />
@@ -160,7 +163,9 @@ class HomePage extends React.Component<HomePageProps, HomePageState> {
                 <Jadwal />
               </Route>
 
-              <Route path='/kepsek/laporan'>Laporan Kepsek</Route>
+              <Route path='/kepsek/laporan'>
+                <KepsekLapor />
+              </Route>
             </Switch>
           </MuiPickersUtilsProvider>
         )}
