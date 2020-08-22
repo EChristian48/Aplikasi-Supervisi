@@ -9,21 +9,20 @@ import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import { SpecGuruDocs } from './SpecGuruDocs'
 
 const ListGuru: React.FC = () => {
-  const [gurus, setGurus] = React.useState<User[]>()
+  const [gurus, setGurus] = React.useState<User[]>([])
   const match = useRouteMatch<{ id: string }>()
 
+  const getGurus = () =>
+    firestore().collection('users').where('role', '==', 'guru').get()
+
   React.useEffect(() => {
-    firestore()
-      .collection('users')
-      .where('role', '==', 'guru')
-      .get()
-      .then(result => {
-        const gurus: User[] = []
-        result.forEach(doc => {
-          gurus.push(doc.data() as User)
-        })
-        setGurus(gurus)
+    getGurus().then(result => {
+      const gurus: User[] = []
+      result.forEach(doc => {
+        gurus.push(doc.data() as User)
       })
+      setGurus(gurus)
+    })
   }, [])
 
   return (
@@ -37,7 +36,7 @@ const ListGuru: React.FC = () => {
           <Route path={`${match.path}`}>
             <Grid item xs={12}>
               <BasicTable headers={['Nama Guru', 'Mata Pelajaran', 'E-Mail']}>
-                {gurus?.map(guru => (
+                {gurus.map(guru => (
                   <TableRow
                     key={guru.uid}
                     hover
