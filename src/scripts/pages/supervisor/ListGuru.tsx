@@ -20,11 +20,7 @@ const ListGuru: React.FC = () => {
   React.useEffect(() => {
     getGurus().then(result => {
       setLoading(false)
-      const gurus: User[] = []
-      result.forEach(doc => {
-        gurus.push(doc.data() as User)
-      })
-      setGurus(gurus)
+      setGurus(result.docs.map(doc => doc.data() as User))
     })
   }, [])
 
