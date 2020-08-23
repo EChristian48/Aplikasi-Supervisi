@@ -10,6 +10,7 @@ import {
   Button,
   makeStyles,
   createStyles,
+  CircularProgress,
 } from '@material-ui/core'
 import { read, utils } from 'xlsx'
 import HtmlParser from 'react-html-parser'
@@ -31,13 +32,16 @@ const useStyles = makeStyles(theme =>
 const Jadwal: React.FC = () => {
   const [hari, setHari] = React.useState<Days | ''>('')
   const [table, setTable] = React.useState('')
+  const [isLoading, setLoading] = React.useState(false)
 
   const classes = useStyles()
   const spacing = useSpacingClasses()
 
   React.useEffect(() => {
     if (hari) {
+      setLoading(true)
       getJadwal(hari).then(result => {
+        setLoading(false)
         const data = result.data() as Jadwal
         if (data) {
           setTable(data.html)
@@ -101,8 +105,15 @@ const Jadwal: React.FC = () => {
             </Typography>
           </Grid>
 
-          <Grid item xs={12}>
-            {HtmlParser(table)}
+          <Grid item xs={12} className={spacing.marginTop2}>
+            {isLoading ? (
+              <CircularProgress
+                variant='indeterminate'
+                className={spacing.marginTop2}
+              />
+            ) : (
+              HtmlParser(table)
+            )}
           </Grid>
 
           <Grid item xs={12} className={spacing.marginTop2}>
