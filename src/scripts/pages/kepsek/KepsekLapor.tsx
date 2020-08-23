@@ -14,18 +14,25 @@ import { firestore } from 'firebase/app'
 import { BasicTable } from '../../components/BasicTable'
 import { GuruFile, Jadwal } from '../../dataSchema'
 import HtmlParser from 'react-html-parser'
+import { useVisibilityClasses } from '../../hooks/useVisibilityClasses'
 
 type KepsekLaporProps = {
   setAppBarShown: (state: boolean) => void
+  isAppBarShown: boolean
 }
 
-const KepsekLapor: React.FC<KepsekLaporProps> = ({ setAppBarShown }) => {
+const KepsekLapor: React.FC<KepsekLaporProps> = ({
+  setAppBarShown,
+  isAppBarShown,
+}) => {
   const [isLoading, setLoading] = React.useState(true)
   const [files, setFiles] = React.useState<GuruFile[]>([])
   const [jadwalEntries, setJadwalEntries] = React.useState<
     { hari: string; jadwal: Jadwal }[]
   >([])
-  const [isButtonVisible, hideButton] = React.useState(false)
+  const [isButtonShown, setButtonShown] = React.useState(true)
+
+  const visibility = useVisibilityClasses()
 
   const getFiles = () => firestore().collectionGroup('files').get()
   const getJadwal = () => firestore().collection('jadwal').get()
@@ -47,6 +54,19 @@ const KepsekLapor: React.FC<KepsekLaporProps> = ({ setAppBarShown }) => {
     )
   }, [])
 
+  React.useEffect(() => {
+    if (!isButtonShown && !isAppBarShown) {
+      window.print()
+      setAppBarShown(true)
+      setButtonShown(true)
+    }
+  }, [isButtonShown, isAppBarShown])
+
+  const zenMode = () => {
+    setAppBarShown(false)
+    setButtonShown(false)
+  }
+
   return (
     <>
       <Container style={{ marginTop: 20 }}>
@@ -56,16 +76,10 @@ const KepsekLapor: React.FC<KepsekLaporProps> = ({ setAppBarShown }) => {
               variant='contained'
               color='primary'
               fullWidth
-              onClick={() => {
-                setAppBarShown(true)
-                hideButton(true)
-                setTimeout(window.print, 500)
-                setTimeout(() => {
-                  setAppBarShown(false)
-                  hideButton(false)
-                }, 2000)
-              }}
-              style={{ display: isButtonVisible ? 'none' : 'block' }}>
+              onClick={zenMode}
+              className={
+                isButtonShown ? visibility.visible : visibility.hidden
+              }>
               Print Gan
             </Button>
           </Grid>
