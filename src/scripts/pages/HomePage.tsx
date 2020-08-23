@@ -85,7 +85,10 @@ const HomePage: React.FC<HomePageProps> = ({ userRole }) => {
             </Route>
 
             <Route path='/kepsek/laporan'>
-              <KepsekLapor setAppBarShown={setAppBarShown} />
+              <KepsekLapor
+                setAppBarShown={setAppBarShown}
+                isAppBarShown={isAppBarShown}
+              />
             </Route>
           </Switch>
         </MuiPickersUtilsProvider>
