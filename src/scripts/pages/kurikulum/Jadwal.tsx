@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
   Container,
   Grid,
-  Fab,
   Select,
   MenuItem,
   FormControl,
@@ -12,42 +11,40 @@ import {
 } from '@material-ui/core'
 import { read, utils } from 'xlsx'
 import HtmlParser from 'react-html-parser'
-import * as firebase from 'firebase/app'
+import { firestore } from 'firebase/app'
 
-import { Jadwal } from '../../dataSchema'
+import { Jadwal, Days } from '../../dataSchema'
 
-const days: string[] = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+const days: Days[] = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
 
 const Jadwal: React.FC = () => {
-  const [hari, setHari] = React.useState('')
+  const [hari, setHari] = React.useState<Days | ''>('')
   const [table, setTable] = React.useState('')
+
+  const getJadwal = (day: Days) =>
+    firestore().collection('jadwal').doc(day).get()
 
   React.useEffect(() => {
     if (hari) {
-      firebase
-        .firestore()
-        .collection('jadwal')
-        .doc(hari)
-        .get()
-        .then(result => {
-          const data = result.data() as Jadwal
-          if (data) {
-            setTable(data.html)
-            console.log('data diambli')
-          } else {
-            setTable('')
-          }
-        })
+      getJadwal(hari).then(result => {
+        const data = result.data() as Jadwal
+        if (data) {
+          setTable(data.html)
+        } else {
+          setTable('')
+        }
+      })
     }
   }, [hari])
 
   const handleHari = (e: React.ChangeEvent<{ value: string }>) => {
-    setHari(e.target.value)
+    setHari(e.target.value as Days)
   }
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files !== null) {
-      const file = e.target.files[0]
+    const files = e.target.files
+    if (files !== null) {
+      const file = files[0]
       const reader = new FileReader()
 
       reader.onload = e => {
@@ -101,7 +98,7 @@ const Jadwal: React.FC = () => {
               variant='outlined'
               disabled={!!!hari}
               onClick={() => {
-                firebase.firestore().collection('jadwal').doc(hari).set({
+                firestore().collection('jadwal').doc(hari).set({
                   html: table,
                 })
               }}>
