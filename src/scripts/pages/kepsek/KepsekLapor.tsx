@@ -15,6 +15,7 @@ import { BasicTable } from '../../components/BasicTable'
 import { GuruFile, Jadwal } from '../../dataSchema'
 import HtmlParser from 'react-html-parser'
 import { useVisibilityClasses } from '../../hooks/useVisibilityClasses'
+import { useSpacingClasses } from '../../hooks/useSpacingClasses'
 
 type KepsekLaporProps = {
   setAppBarShown: (state: boolean) => void
@@ -33,6 +34,7 @@ const KepsekLapor: React.FC<KepsekLaporProps> = ({
   const [isButtonShown, setButtonShown] = React.useState(true)
 
   const visibility = useVisibilityClasses()
+  const spacing = useSpacingClasses()
 
   const getFiles = () => firestore().collectionGroup('files').get()
   const getJadwal = () => firestore().collection('jadwal').get()
@@ -69,7 +71,7 @@ const KepsekLapor: React.FC<KepsekLaporProps> = ({
 
   return (
     <>
-      <Container style={{ marginTop: 20 }}>
+      <Container className={spacing.marginTop2}>
         <Grid container>
           <Grid item xs={12}>
             <Button
@@ -87,13 +89,15 @@ const KepsekLapor: React.FC<KepsekLaporProps> = ({
           <Grid item xs={12}>
             {jadwalEntries.map(jadwalEntry => (
               <React.Fragment key={jadwalEntry.hari}>
-                <Typography>{jadwalEntry.hari}</Typography>
+                <Typography className={spacing.marginTop2}>
+                  {jadwalEntry.hari}
+                </Typography>
                 {HtmlParser(jadwalEntry.jadwal.html)}
               </React.Fragment>
             ))}
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} className={spacing.marginTop2}>
             <BasicTable headers={['Nama File', 'Tanggal', 'Status']}>
               {files.map(file => (
                 <TableRow key={file.fullPath}>
