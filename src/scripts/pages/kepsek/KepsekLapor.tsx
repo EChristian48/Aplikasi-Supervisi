@@ -9,8 +9,8 @@ import {
   TableCell,
   Typography,
 } from '@material-ui/core'
-import { useRouteMatch } from 'react-router-dom'
-import * as firebase from 'firebase/app'
+
+import { firestore } from 'firebase/app'
 import { BasicTable } from '../../components/BasicTable'
 import { GuruFile, Jadwal } from '../../dataSchema'
 import HtmlParser from 'react-html-parser'
@@ -27,22 +27,24 @@ const KepsekLapor: React.FC<KepsekLaporProps> = ({ setAppBarShown }) => {
   >([])
   const [isButtonVisible, hideButton] = React.useState(false)
 
+  const getFiles = () => firestore().collectionGroup('files').get()
+  const getJadwal = () => firestore().collection('jadwal').get()
+
   React.useEffect(() => {
-    Promise.all([
-      firebase.firestore().collectionGroup('files').get(),
-      firebase.firestore().collection('jadwal').get(),
-    ]).then(([fileResults, jadwalResult]) => {
-      setLoading(false)
-      setFiles(fileResults.docs.map(doc => doc.data() as GuruFile))
-      setJadwalEntries(
-        jadwalResult.docs.map(doc => {
-          return {
-            hari: doc.id,
-            jadwal: doc.data() as Jadwal,
-          }
-        })
-      )
-    })
+    Promise.all([getFiles(), getJadwal()]).then(
+      ([fileResults, jadwalResult]) => {
+        setLoading(false)
+        setFiles(fileResults.docs.map(doc => doc.data() as GuruFile))
+        setJadwalEntries(
+          jadwalResult.docs.map(doc => {
+            return {
+              hari: doc.id,
+              jadwal: doc.data() as Jadwal,
+            }
+          })
+        )
+      }
+    )
   }, [])
 
   return (
