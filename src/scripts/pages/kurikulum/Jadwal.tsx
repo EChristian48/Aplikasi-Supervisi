@@ -8,6 +8,8 @@ import {
   InputLabel,
   Typography,
   Button,
+  makeStyles,
+  createStyles,
 } from '@material-ui/core'
 import { read, utils } from 'xlsx'
 import HtmlParser from 'react-html-parser'
@@ -15,13 +17,23 @@ import { firestore } from 'firebase/app'
 
 import { Jadwal, Days } from '../../dataSchema'
 import { days } from '../../data/days'
+import { useSpacingClasses } from '../../hooks/useSpacingClasses'
+
+const useStyles = makeStyles(theme =>
+  createStyles({
+    dayMenu: {
+      minWidth: 150,
+      marginTop: theme.spacing(2),
+    },
+  })
+)
 
 const Jadwal: React.FC = () => {
   const [hari, setHari] = React.useState<Days | ''>('')
   const [table, setTable] = React.useState('')
 
-  const getJadwal = (day: Days) =>
-    firestore().collection('jadwal').doc(day).get()
+  const classes = useStyles()
+  const spacing = useSpacingClasses()
 
   React.useEffect(() => {
     if (hari) {
@@ -35,6 +47,14 @@ const Jadwal: React.FC = () => {
       })
     }
   }, [hari])
+
+  const getJadwal = (day: Days) =>
+    firestore().collection('jadwal').doc(day).get()
+
+  const updateJadwal = () => {
+    const jadwal: Jadwal = { html: table }
+    return firestore().collection('jadwal').doc(hari).set(jadwal)
+  }
 
   const handleHari = (e: React.ChangeEvent<{ value: string }>) => {
     setHari(e.target.value as Days)
@@ -63,7 +83,7 @@ const Jadwal: React.FC = () => {
     <Container>
       <Grid container>
         <Grid item lg={2} xs={12}>
-          <FormControl style={{ minWidth: 120 }}>
+          <FormControl className={classes.dayMenu}>
             <InputLabel id='hari'>Pilih Hari</InputLabel>
             <Select labelId='hari' onChange={handleHari} value={hari}>
               {days.map(day => (
@@ -75,15 +95,9 @@ const Jadwal: React.FC = () => {
           </FormControl>
         </Grid>
         <Grid container item xs={12} lg={10}>
-          <Grid item xs={12} style={{ marginTop: 8 }}>
+          <Grid item xs={12} className={spacing.marginTop2}>
             <Typography>
-              <input
-                type='file'
-                name='jadwalInput'
-                id='jadwalInput'
-                onChange={handleFile}
-                disabled={!!!hari}
-              />
+              <input type='file' onChange={handleFile} disabled={!!!hari} />
             </Typography>
           </Grid>
 
@@ -91,16 +105,12 @@ const Jadwal: React.FC = () => {
             {HtmlParser(table)}
           </Grid>
 
-          <Grid item xs={12} style={{ marginTop: 8 }}>
+          <Grid item xs={12} className={spacing.marginTop2}>
             <Button
               fullWidth
               variant='outlined'
               disabled={!!!hari}
-              onClick={() => {
-                firestore().collection('jadwal').doc(hari).set({
-                  html: table,
-                })
-              }}>
+              onClick={updateJadwal}>
               Simpan
             </Button>
           </Grid>
