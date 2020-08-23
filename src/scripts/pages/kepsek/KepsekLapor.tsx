@@ -3,8 +3,6 @@ import {
   Container,
   Grid,
   Button,
-  Backdrop,
-  CircularProgress,
   TableRow,
   TableCell,
   Typography,
@@ -16,6 +14,7 @@ import { GuruFile, Jadwal } from '../../dataSchema'
 import HtmlParser from 'react-html-parser'
 import { useVisibilityClasses } from '../../hooks/useVisibilityClasses'
 import { useSpacingClasses } from '../../hooks/useSpacingClasses'
+import { LoadingBanner } from '../../components/LoadingBanner'
 
 type KepsekLaporProps = {
   setAppBarShown: (state: boolean) => void
@@ -113,9 +112,7 @@ const KepsekLapor: React.FC<KepsekLaporProps> = ({
         </Grid>
       </Container>
 
-      <Backdrop open={isLoading}>
-        <CircularProgress />
-      </Backdrop>
+      <LoadingBanner open={isLoading} />
     </>
   )
 }
