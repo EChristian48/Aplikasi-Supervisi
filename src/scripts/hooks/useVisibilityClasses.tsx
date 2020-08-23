@@ -1,6 +1,6 @@
 import { makeStyles, createStyles } from '@material-ui/core'
 
-const useVisibilityClasses = makeStyles(theme =>
+const useVisibilityClasses = makeStyles(() =>
   createStyles({
     visible: {
       visibility: 'visible',
