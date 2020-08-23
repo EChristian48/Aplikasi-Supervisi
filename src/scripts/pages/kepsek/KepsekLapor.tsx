@@ -20,7 +20,6 @@ type KepsekLaporProps = {
 }
 
 const KepsekLapor: React.FC<KepsekLaporProps> = ({ setAppBarShown }) => {
-  const match = useRouteMatch()
   const [isLoading, setLoading] = React.useState(true)
   const [files, setFiles] = React.useState<GuruFile[]>([])
   const [jadwalEntries, setJadwalEntries] = React.useState<
