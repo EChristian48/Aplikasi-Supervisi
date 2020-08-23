@@ -80,13 +80,7 @@ const ListDokumen: React.FC = () => {
                     <TableCell>
                       <Button
                         onClick={() => {
-                          file.ref
-                            .update({ ...data, accepted: !data.accepted })
-                            .then(() =>
-                              listenGuruFiles(match.params.id).then(result =>
-                                setFiles(result.docs)
-                              )
-                            )
+                          file.ref.update({ ...data, accepted: !data.accepted })
                         }}>
                         {data.accepted ? 'Batalkan' : 'Terima'}
                       </Button>
