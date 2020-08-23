@@ -14,8 +14,7 @@ import HtmlParser from 'react-html-parser'
 import { firestore } from 'firebase/app'
 
 import { Jadwal, Days } from '../../dataSchema'
-
-const days: Days[] = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu']
+import { days } from '../../data/days'
 
 const Jadwal: React.FC = () => {
   const [hari, setHari] = React.useState<Days | ''>('')
