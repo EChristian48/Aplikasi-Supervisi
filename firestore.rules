@@ -10,12 +10,13 @@ service cloud.firestore {
       allow read, write: if getUserData().role == 'kurikulum' || getUserData().role == 'kepsek'
     }    
 
-    match /users/{uid} {
-      allow read, update: if isOwner(uid)
-    }
-
     match /users {
       allow list: if getUserData().role == 'supervisor'
+
+      match /{uid} {
+        allow read, update: if isOwner(uid)
+        allow read: if getUserData().role == 'supervisor'
+      }
     }
 
     // Functions
