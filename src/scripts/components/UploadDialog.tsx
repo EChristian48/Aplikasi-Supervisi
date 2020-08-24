@@ -86,6 +86,10 @@ const UploadDialog: React.FC<UploadDialogProps> = props => {
     }
 
     const uploadComplete = () => {
+      setUploadStatus({
+        visible: false,
+        progress: 0,
+      })
       props.onClose()
       createDbRecord(fileRef).then(props.uploadCallback)
     }
