@@ -42,7 +42,7 @@
 12. Tungguin... #2
     ![img](https://i.imgur.com/3liwpOU.png)
 
-13. Buka bagian "Database" (di kiri juga)
+13. Buka bagian "Database" (Cloud Firestore) (di kiri juga)
     ![img](https://i.imgur.com/rj6UCJa.png)
 
 14. Pilih yang mana aja bebas sih, terus klik next
