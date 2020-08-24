@@ -19,8 +19,10 @@ type GuruFile = {
   date: number
 }
 
+type Days = 'Senin' | 'Selasa' | 'Rabu' | 'Kamis' | 'Jumat' | 'Sabtu'
+
 type Jadwal = {
   html: string
 }
 
-export { User, Role, GuruFile, Jadwal }
+export { User, Role, GuruFile, Jadwal, Days }
