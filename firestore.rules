@@ -14,6 +14,10 @@ service cloud.firestore {
       allow read, update: if isOwner(uid)
     }
 
+    match /users {
+      allow list: if getUserData().role == 'supervisor'
+    }
+
     // Functions
 
     function getUserData() {
