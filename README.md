@@ -79,7 +79,7 @@
 
 25. Jalanin `firebase init` dulu, nanti pilih aja yes yes, terus pilih fitur nya `functions`, `hosting`, `firestore`, `storage`. (Ga ada screenshot, kelupaan)
 
-26. Abis itu jalanin `firebase deploy`
+26. Abis itu jalanin `firebase deploy` (kalo ada error, hapus `.firebaserc` dan `firebase.json`, terus ulangin step No. 25)
     ![img](https://i.imgur.com/YmGMaFr.png)
 
 27. Balik lagi ke firebase console, buka bagian "Authentication", "Sign In Method", lalu klik "E-Mail/Password"
