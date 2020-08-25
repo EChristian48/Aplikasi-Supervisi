@@ -19,7 +19,7 @@ type BasicDialogProps = {
 const BasicDialog: React.FC<BasicDialogProps> = props => {
   return (
     <Dialog open={props.open} onClose={props.onClose}>
-      <DialogTitle>Gagal Login</DialogTitle>
+      <DialogTitle>{props.title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{props.text}</DialogContentText>
         {props.children}
