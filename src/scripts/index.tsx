@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
-import 'firebase/functions'
 import 'firebase/storage'
 import { firebaseConfig } from './firebaseConfig'
 
